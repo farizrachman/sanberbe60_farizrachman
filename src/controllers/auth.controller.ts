@@ -4,7 +4,7 @@ import { IRequestWithUser } from "../middlewares/auth.middleware";
 import * as Yup from "yup";
 import { login, register, updateProfile } from "../services/auth.service";
 import { ObjectId } from "mongoose";
-import { decrypt } from "../utils/encryption";
+// import { decrypt } from "../utils/encryption";
 
 const registerSchema = Yup.object().shape({
     fullName: Yup.string().required(),
@@ -64,7 +64,15 @@ export default {
         }
     },
     async register(req: IRequestRegister, res: Response) {
-
+        /**
+        #swagger.tags = ['Auth']
+        #swagger.requestBody = {
+        required: true,
+        schema: {
+            $ref: "#/components/schemas/RegisterRequest"
+        }
+        }
+     */
         try {
             const { email, fullName, password, username, confirmPassword, roles } =
                 req.body;
