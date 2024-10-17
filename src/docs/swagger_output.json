@@ -392,6 +392,9 @@
     },
     "/auth/register": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -399,6 +402,21 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
           }
         }
       }
@@ -622,6 +640,38 @@
         },
         "xml": {
           "name": "UpdateProfileRequest"
+        }
+      },
+      "ProductCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Laptop Lenovo Legion 5"
+          },
+          "description": {
+            "type": "string",
+            "example": "Deskripsi Laptop Lenovo Legion 5"
+          },
+          "images": {
+            "type": "string",
+            "example": "http://res.cloudinary.com/druuy0ht8/image/upload/v1728401802/wosv716cuq2inyf0eg0n.jpg"
+          },
+          "price": {
+            "type": "number",
+            "example": 10000000
+          },
+          "qty": {
+            "type": "number",
+            "example": 15
+          },
+          "categoryId": {
+            "type": "string",
+            "example": "67034fcf047141cf27b8e97d"
+          }
+        },
+        "xml": {
+          "name": "ProductCreateRequest"
         }
       }
     }

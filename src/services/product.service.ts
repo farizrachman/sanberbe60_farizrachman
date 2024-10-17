@@ -17,6 +17,7 @@ const createValidationSchema = Yup.object().shape({
 export const create = async (payload: Product): Promise<Product> => {
   await createValidationSchema.validate(payload);
   const result = await ProductsModel.create(payload);
+  console.log(result)
   return result;
 };
 

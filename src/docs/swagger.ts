@@ -38,6 +38,14 @@ const doc = {
                 password: "123412341",
                 confirmPassword: "123412341",
             },
+            ProductCreateRequest: {
+                name: "Laptop Lenovo Legion 5",
+                description: "Deskripsi Laptop Lenovo Legion 5",
+                images: "http://res.cloudinary.com/druuy0ht8/image/upload/v1728401802/wosv716cuq2inyf0eg0n.jpg",
+                price: 10000000,
+                qty: 15,
+                categoryId: "67034fcf047141cf27b8e97d",
+            },
         },
     },
 };

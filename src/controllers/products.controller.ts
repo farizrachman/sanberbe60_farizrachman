@@ -22,9 +22,10 @@ export default {
         $ref: "#/components/schemas/ProductCreateRequest"
       }
     }
-    */
+     */
     try {
       const result = await create(req.body);
+      console.log(req.body)
       res.status(201).json({
         data: result,
         message: "Success create product",
