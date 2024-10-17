@@ -80,7 +80,7 @@ export default {
         #swagger.requestBody = {
         required: true,
         schema: {
-            $ref: "#/components/schemas/CategoriesCreateRequest"
+            $ref: "#/components/schemas/CategoryCreateRequest"
         }
         }
         */

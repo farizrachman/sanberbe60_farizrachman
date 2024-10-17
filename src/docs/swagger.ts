@@ -46,6 +46,9 @@ const doc = {
                 qty: 15,
                 categoryId: "67034fcf047141cf27b8e97d",
             },
+            CategoryCreateRequest: {
+                name: "Elektronik",
+            }
         },
     },
 };
