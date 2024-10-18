@@ -685,6 +685,50 @@
         "xml": {
           "name": "CategoryCreateRequest"
         }
+      },
+      "OrderCreateRequest": {
+        "type": "object",
+        "properties": {
+          "grandTotal": {
+            "type": "number",
+            "example": 120000
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "1"
+                },
+                "qty": {
+                  "type": "number",
+                  "example": 100
+                },
+                "subTotal": {
+                  "type": "number",
+                  "example": 120000
+                },
+                "orderId": {
+                  "type": "string",
+                  "example": "67034fcf047141cf27b8e97d"
+                }
+              }
+            }
+          },
+          "status": {
+            "type": "string",
+            "example": "completed"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "67034fcf047141cf27b8e97d"
+          }
+        },
+        "xml": {
+          "name": "OrderCreateRequest"
+        }
       }
     }
   }

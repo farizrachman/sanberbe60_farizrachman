@@ -4,6 +4,7 @@ import uploadMiddleware from "../middlewares/upload.middleware";
 import uploadController from "../controllers/upload.controller";
 import productsController from "../controllers/products.controller";
 import categoriesController from "../controllers/categories.controller";
+import ordersController from "../controllers/orders.controller";
 import authController from "../controllers/auth.controller";
 import authMiddleware from "../middlewares/auth.middleware";
 import rbacMiddleware from "../middlewares/rbac.middleware";
@@ -36,6 +37,13 @@ router.post(
 );
 // router.put("/auth/update-profile", authMiddleware, authController.updateProfile);
 router.put("/auth/update-profile", authMiddleware, authController.profile);
+
+// CRUD Orders
+router.get("/orders", ordersController.findAll);
+router.post("/orders", ordersController.create);
+router.get("/orders/:id", ordersController.findOne);
+router.put("/orders/:id", ordersController.update);
+router.delete("/orders/:id", ordersController.delete);
 
 router.post("/upload", uploadMiddleware.single, uploadController.single);
 router.post("/uploads", uploadMiddleware.multiple, uploadController.multiple);

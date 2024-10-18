@@ -48,6 +48,18 @@ const doc = {
             },
             CategoryCreateRequest: {
                 name: "Elektronik",
+            },
+            OrderCreateRequest: {
+                grandTotal: 120000,
+                orderItems: [
+                    {
+                        productId: "1",
+                        qty: 100,
+                        subTotal: 120000,
+                        orderId: "67034fcf047141cf27b8e97d",
+                    }],
+                status: "completed",
+                createdBy: "67034fcf047141cf27b8e97d",
             }
         },
     },
