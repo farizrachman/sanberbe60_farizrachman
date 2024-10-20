@@ -1,7 +1,31 @@
 import { Request, Response } from "express";
 import OrdersModel from "../models/orders.model";
+import ProductsModel from "../models/products.model";
+import * as Yup from "yup";
+import { ObjectId } from "mongoose";
+
+enum statusType {
+    pending = "pending",
+    completed = "completed",
+    cancelled = "cancelled"
+}
+// "pending", "completed", "cancelled"
+const createValidationSchema = Yup.object().shape({
+    grandTotal: Yup.number().required(),
+    orderItems: Yup.array().of(Yup.string()).required(),
+    status: Yup.mixed<statusType>().oneOf(Object.values(statusType)).required(),
+    createBy: Yup.string().required(),
+});
+
+export interface IFindAll {
+    query?: unknown;
+    limit: number;
+    page: number;
+    search: string;
+}
 
 export default {
+    // 1. Membuat Order Baru
     async create(req: Request, res: Response) {
         /**
         #swagger.tags = ['Orders']
@@ -17,37 +41,111 @@ export default {
         */
         try {
             const result = await OrdersModel.create(req.body);
+
+            // const product = await ProductsModel.findByIdAndUpdate(
+            //     { _id: req.body.orderId},
+            //     {
+            //         $push: { courses: req.body },
+            //         $inc: {
+            //             quantity: 1,
+            //         },
+            //     },
+            //     { new: true }
+            // )
+            // const filter = req.body.orderItems.productId;
+            const filter = { _id: req.body.orderItems.productId };
+            // let qtyUpdate = req.body.orderItems.productId.qty - req.body.orderItems.qty;
+            const updateQty = {
+                $set: {
+                    qty: req.body.orderItems.productId.qty - req.body.orderItems.qty,
+                },
+            };
+            // let options = { status: "completed" };
+            // const product = await ProductsModel.findByIdAndUpdate('orderItems.productId', { qty: qtyUpdate }, options);
+            const product = await ProductsModel.findOneAndUpdate(filter, updateQty);
+
+            // const order = await OrdersModel.findOneAndUpdate(req.body.orderId).populate('orderItems.productId');
+            // console.log(order);
+            // const product = await ProductsModel.findById('orderItems.productId');
+
+
+            // for (const item of order.orderItems) {
+            //     const product = await ProductsModel.findById(item.productId);
+            //     product.qty -= item.qty;
+            //     // await product.save();
+            // }
+            // const result =+ await ProductsModel.update(req.params?.id, req.body);
+            // const result =+ await ProductsModel.update(req.params?.orderItems.productId, req.body);
             res.status(201).json({
-                data: result,
-                message: "Success create category",
+                data: [result, product],
+                message: "Success create order",
             });
         } catch (error) {
+            if (error instanceof Yup.ValidationError) {
+                res.status(400).json({
+                    data: error.errors,
+                    message: "Failed create order",
+                });
+                return;
+            }
+
             const err = error as Error;
             res.status(500).json({
                 data: err.message,
-                message: "Failed create category",
+                message: "Failed create order",
             });
         }
     },
-    async findAll(req: Request, res: Response) {
+    async findAll(req: Request, res: Response,) {
         /**
         #swagger.tags = ['Orders']
         */
         try {
-            const search = req.query.search;
-            const page = req.query.page;
-            const limit = req.query.limit;
+            // const {
+            //     limit = 10,
+            //     page = 1,
+            //     search,
+            // } = req.query;
 
-            const result = await OrdersModel.find();
+            const { limit = 10, page = 1, search } = req.query as unknown as IFindAll;
+            // const query = {
+            //     limit: 10,
+            //     page: 1,
+            // };
+            const query: Record<string, any> = {};
+            // const query = {};
+            if (search) {
+                Object.assign(query, {
+                    status: { $regex: search, $options: "i" },
+                });
+            }
+
+            // const result = await OrdersModel.find(query)
+            //     .limit(limit)
+            //     .skip((page - 1) * limit)
+            //     .sort({ createdAt: -1 })
+            //     .populate("productId")
+            //     .populate("createBy")
+            //     .exec();
+            // console.log(req.query);
+            const result = await OrdersModel.find(query)
+                .limit(limit)
+                .skip((page - 1) * limit)
+                .sort({ createdAt: -1 })
+                .populate("orderItems.productId")
+                .populate("createdBy")
+                .exec();
+            // console.log(result);
+
             res.status(200).json({
                 data: result,
-                message: "Success get all categories",
+                message: "Success get all orders",
             });
         } catch (error) {
             const err = error as Error;
             res.status(500).json({
                 data: err.message,
-                message: "Failed get all categories",
+                message: "Failed get all orders",
             });
         }
     },
@@ -61,13 +159,48 @@ export default {
             });
             res.status(200).json({
                 data: result,
-                message: "Success get one category",
+                message: "Success get one order",
             });
         } catch (error) {
             const err = error as Error;
             res.status(500).json({
                 data: err.message,
-                message: "Failed get one category",
+                message: "Failed get one order",
+            });
+        }
+    },
+    // 2. Menampilkan Riwayat Order berdasarkan Pengguna (User)
+    async historyOrder(req: Request, res: Response,) {
+        /**
+        #swagger.tags = ['Orders']
+        */
+        try {
+
+            const { limit = 10, page = 1, search } = req.query as unknown as IFindAll;
+            const query: Record<string, any> = {};
+            if (search) {
+                Object.assign(query, {
+                    status: { $regex: search, $options: "i" },
+                });
+            }
+
+            const result = await OrdersModel.find(query)
+                .limit(limit)
+                .skip((page - 1) * limit)
+                .sort({ createdAt: -1 })
+                .populate("createdBy")
+                .exec();
+            // console.log(result);
+
+            res.status(200).json({
+                data: result,
+                message: "Success get all orders",
+            });
+        } catch (error) {
+            const err = error as Error;
+            res.status(500).json({
+                data: err.message,
+                message: "Failed get all orders",
             });
         }
     },
@@ -95,13 +228,13 @@ export default {
 
             res.status(200).json({
                 data: result,
-                message: "Success update category",
+                message: "Success update order",
             });
         } catch (error) {
             const err = error as Error;
             res.status(500).json({
                 data: err.message,
-                message: "Failed update category",
+                message: "Failed update order",
             });
         }
     },
@@ -119,13 +252,13 @@ export default {
 
             res.status(200).json({
                 data: result,
-                message: "Success delete category",
+                message: "Success delete order",
             });
         } catch (error) {
             const err = error as Error;
             res.status(500).json({
                 data: err.message,
-                message: "Failed delete category",
+                message: "Failed delete order",
             });
         }
     },

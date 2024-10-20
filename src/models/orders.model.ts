@@ -1,38 +1,18 @@
 import mongoose, { Types } from "mongoose";
 
-export interface Order {
-  _id?: Types.ObjectId;
-  grandTotal: Number;
-  orderItems: [String];
-  status: string;
-  createdBy: Types.ObjectId;
-  createdAt: string;
-  updatedAt: string;
-}
+// export interface Order {
+//   _id?: Types.ObjectId;
+//   grandTotal: Number;
+//   orderItems: [String];
+//   status: string;
+//   createdBy: Types.ObjectId;
+//   createdAt: string;
+//   updatedAt: string;
+// }
 
 const Schema = mongoose.Schema;
 
-// const schema = new Schema({
-//   email: { type: String, unique: true, required: true },
-//   hash: { type: String, required: true },
-//   createdDate: { type: Date, default: Date.now },
-//   settings: {
-//     favorites: [String],
-//     cart: [
-//       {
-//         quantity: Number,
-//         marketId: String
-//       }
-//     ],
-//     states: {
-//       favorites: { type: Boolean, default: true },
-//       search: { type: Boolean, default: false },
-//       category: { type: Schema.Types.Mixed, default: false }
-//     }
-//   }
-// });
-
-const OrderSchema = new Schema<Order>({
+const OrderSchema = new Schema({
   grandTotal: {
     type: Number,
     required: true,
@@ -40,23 +20,36 @@ const OrderSchema = new Schema<Order>({
   orderItems: {
     type: [
       {
+        name: {
+          type: Schema.Types.String,
+          ref: "Products",
+          required: true,
+        },
         productId: {
           type: Schema.Types.ObjectId,
           ref: "Products",
           required: true,
         },
-        qty: {
-          type: Number,
+        price: {
+          type: Schema.Types.String,
+          ref: "Products",
           required: true,
+        },
+        qty: {
+          type: Schema.Types.Number,
+          // ref: "Products",
+          required: true,
+          min: [1, "Minimal qty adalah 1"],
+          max: [5, "Maximal qty adalah 5"],
         },
         subTotal: {
           type: Number,
           required: true,
         },
-        orderId: {
+        order: {
           type: Schema.Types.ObjectId,
           ref: "Orders",
-          required: true,
+          // required: true,
         },
       },
     ],
@@ -74,7 +67,8 @@ const OrderSchema = new Schema<Order>({
 },
   {
     timestamps: true,
-  });
+  }
+);
 
 const OrdersModel = mongoose.model("Orders", OrderSchema);
 
