@@ -57,7 +57,7 @@
       </div>
       <div class="content">
         <h2>Thank you for your purchase!</h2>
-        <p>Dear <%= createdBy %>,</p>
+        <p>Dear <%= customerName %>,</p>
         <p>Thank you for your order. Below are the details of your purchase:</p>
         <table class="order-details">
           <tr>
@@ -81,17 +81,15 @@
             <td><strong><%= grandTotal %></strong></td>
           </tr>
         </table>
+        
         <p>
-          If you have any questions about your order, please contact us at <%=
-          contactEmail %>.
+          If you have any questions about your order, please contact us at <%= contactEmail %>.
         </p>
         <p>Best regards,</p>
-        <!-- <p><%= companyName %></p> -->
-        <p>Fariz Rachman</p>
+        <p><%= companyName %></p>
       </div>
       <div class="footer">
-        <!-- <p>&copy; <%= year %> <%= companyName %>. All rights reserved.</p> -->
-        <p>&copy; 2024 Fariz Rachman. All rights reserved.</p>
+        <p>&copy; <%= year %> <%= companyName %>. All rights reserved.</p>
       </div>
     </div>
   </body>

@@ -42,7 +42,7 @@ router.put("/auth/update-profile", authMiddleware, authController.profile);
 router.get("/orders", ordersController.findAll);
 router.post("/orders", ordersController.create);
 router.get("/orders/:id", ordersController.findOne);
-router.get("/orders/:id", ordersController.historyOrder);
+router.get("/history", ordersController.historyOrder);
 router.put("/orders/:id", ordersController.update);
 router.delete("/orders/:id", ordersController.delete);
 

@@ -85,15 +85,19 @@ export default {
                 });
             }
             const order = doc;
+            console.log(order);
 
             // console.log("Send Email to", order.email);
 
             const content = await mail.render('invoice.ejs', {
                 // tampilkan list product di dalam email sesuai dengan data orderItems, apabila orderItems 5 maka tampil 5, apabila orderItems 10 maka tampil 10 dst.
-                grandTotal: order.grandTotal,
-                orderItems: order.orderItems,
-                status: order.status,
-                createdBy: order.createdBy,
+                grandTotal: req.body.grandTotal,
+                orderItems: req.body.orderItems,
+                status: req.body.status,
+                customerName: req.body.createdBy,
+                contactEmail: "farizrachman91@gmail.com",
+                companyName: "Fariz Rachman App",
+                year: "2024",
             });
 
             await mail.send({
@@ -233,7 +237,7 @@ export default {
 
             res.status(200).json({
                 data: result,
-                message: "Success get all orders",
+                message: "Success get history orders",
             });
         } catch (error) {
             const err = error as Error;
