@@ -58,7 +58,6 @@ export default {
       } = req.query as unknown as IPaginationQuery;
 
       const query = {};
-
       if (search) {
         Object.assign(query, {
           name: { $regex: search, $options: "i" },
@@ -83,7 +82,6 @@ export default {
     */
     try {
       const result = await findOne(req.params?.id);
-
       res.status(200).json({
         data: result,
         message: "Success get one product",
@@ -133,7 +131,6 @@ export default {
     */
     try {
       const result = await remove(req.params?.id);
-
       res.status(200).json({
         data: result,
         message: "Success delete product",

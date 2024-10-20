@@ -1,5 +1,14 @@
 import { Request, Response } from "express";
-import CategoriesModel from "../models/categories.model";
+// import CategoriesModel from "../models/categories.model";
+import * as Yup from "yup";
+import {
+    create,
+    findAll,
+    findOne,
+    update,
+    remove,
+} from "../services/category.service";
+import { IPaginationQuery } from "../utils/interfaces";
 
 export default {
     async create(req: Request, res: Response) {
@@ -16,12 +25,20 @@ export default {
         }
         */
         try {
-            const result = await CategoriesModel.create(req.body);
+            const result = await create(req.body);
             res.status(201).json({
                 data: result,
                 message: "Success create category",
             });
         } catch (error) {
+            if(error instanceof Yup.ValidationError) {
+                res.status(400).json({
+                    data: error.errors,
+                    message: "Failed create category",
+                });
+                return;
+            }
+
             const err = error as Error;
             res.status(500).json({
                 data: err.message,
@@ -34,11 +51,19 @@ export default {
         #swagger.tags = ['Categories']
         */
         try {
-            const search = req.query.search;
-            const page = req.query.page;
-            const limit = req.query.limit;
+            const {
+                limit = 10,
+                page = 1,
+                search,
+            } = req.query as unknown as IPaginationQuery;
 
-            const result = await CategoriesModel.find();
+            const query = {};
+            if (search) {
+                Object.assign(query, {
+                    name: { $regex: search, $options: "i" },
+                });
+            }
+            const result = await findAll(query, limit, page);
             res.status(200).json({
                 data: result,
                 message: "Success get all categories",
@@ -56,9 +81,7 @@ export default {
         #swagger.tags = ['Categories']
         */
         try {
-            const result = await CategoriesModel.findOne({
-                _id: req.params.id,
-            });
+            const result = await findOne(req.params?.id);
             res.status(200).json({
                 data: result,
                 message: "Success get one category",
@@ -85,14 +108,7 @@ export default {
         }
         */
         try {
-            const result = await CategoriesModel.findOneAndUpdate(
-                { _id: req.params.id },
-                req.body,
-                {
-                    new: true,
-                }
-            );
-
+            const result = await update(req.params?.id, req.body);
             res.status(200).json({
                 data: result,
                 message: "Success update category",
@@ -113,10 +129,7 @@ export default {
         }]
         */
         try {
-            const result = await CategoriesModel.findOneAndDelete({
-                _id: req.params.id,
-            });
-
+            const result = await remove(req.params?.id);
             res.status(200).json({
                 data: result,
                 message: "Success delete category",

@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Types, Document, ObjectId } from "mongoose";
 
 // export interface Order {
 //   _id?: Types.ObjectId;
@@ -6,6 +6,48 @@ import mongoose, { Types } from "mongoose";
 //   orderItems: [String];
 //   status: string;
 //   createdBy: Types.ObjectId;
+//   createdAt: string;
+//   updatedAt: string;
+// }
+
+// export interface orderDetail {
+//   name: String;
+//   productId: Types.ObjectId;
+//   price: String;
+//   qty: Number;
+//   subTotal: Number;
+//   order: Types.ObjectId;
+// }
+
+// export interface Order {
+//   _id?: Types.ObjectId;
+//   grandTotal: Number;
+//   // orderItems: [Array];
+//   // orderItems: { name: String; productId: String; price: String; qty: Number; subTotal: Number; order: Types.ObjectId }[];
+//   // orderItems: Array<{ name: String; productId: Types.ObjectId; price: String; qty: Number; subTotal: Number; order: Types.ObjectId }> 
+//   orderItems: Array<orderDetail>;
+//   status: String;
+//   createdBy: Types.ObjectId;
+//   createdAt: String;
+//   updatedAt: String;
+// }
+
+// export interface orderItems {
+//   name: String;
+//   productId: ObjectId;
+//   price: String;
+//   qty: Number;
+//   subTotal: Number;
+//   order: ObjectId;
+//   // createdAt: string;
+//   // updatedAt: string;
+// }
+
+// export interface Order {
+//   grandTotal: number;
+//   orderItems: orderItems[];
+//   status: 'pending' | 'completed' | 'cancelled';
+//   createdBy: ObjectId;
 //   createdAt: string;
 //   updatedAt: string;
 // }

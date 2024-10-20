@@ -54,6 +54,13 @@ UserSchema.pre("save", function (next) {
     next();
 });
 
+// UserSchema.post("save", async function (doc, next) {
+//     const user = doc;
+    
+//     console.log("Send Email to", user.email)
+//     next();
+// });
+
 UserSchema.pre("updateOne", async function (next) {
     const user = (this as unknown as { _update: any })._update as User;
     user.password = encrypt(user.password);
