@@ -66,16 +66,14 @@
             <th>Price</th>
             <th>Total</th>
           </tr>
-          <!-- <% orderItems.forEach(function(item) { %> -->
-          <%  for (const item of orderItems) { %>
+          <% orderItems?.forEach(item => { %>
           <tr>
             <td><%= item.name %></td>
             <td><%= item.qty %></td>
             <td><%= item.price %></td>
             <td><%= item.qty * item.price %></td>
           </tr>
-          <!-- <% }); %> -->
-          <% } %>
+          <% }); %>
           <tr>
             <td colspan="3" style="text-align: right">
               <strong>Grand Total:</strong>

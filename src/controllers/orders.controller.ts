@@ -97,8 +97,8 @@ export default {
             });
 
             await mail.send({
-                to: order.createdBy.username,
-                // to: "farizrachman91@gmail.com",
+                // to: order.createdBy.username,
+                to: "farizrachman91@gmail.com",
                 subject: "Berhasil pesan order",
                 content,
             });
