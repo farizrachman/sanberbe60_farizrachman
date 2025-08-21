@@ -1,34 +1,23 @@
-{ "rewrites": [{ "source": "/(.*)", "destination": "/" }] }
 {
-    "version": 2,
-    "builds": [
+  "rewrites": [
     {
-      "src": "hitech/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
+{
+  "version": 2,
+  "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+      "src": "src/index.ts",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/studio(.*)",
-      "dest": "/hitech/dist$1"
-    },
     {
       "src": "/(.*)",
       "dest": "src/index.ts"
     }
   ]
 }
-
-
-
-
