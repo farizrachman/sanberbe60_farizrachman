@@ -1,6 +1,6 @@
+{ "rewrites": [{ "source": "/(.*)", "destination": "/" }] }
 {
     "version": 2,
-    "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
     "builds": [
         {
             "src": "src/index.ts",
@@ -22,6 +22,7 @@
         }
     ]
 }
+
 
 
 
