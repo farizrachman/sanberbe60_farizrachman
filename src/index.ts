@@ -3,10 +3,10 @@ import db from "./utils/database";
 import routes from "./routes/api";
 import bodyParser from "body-parser";
 import docs from "./docs/route";
-// import {
-//   errorNotFoundMiddleware,
-//   errorServerMiddleware,
-// } from "./middlewares/error.middleware";
+import {
+  errorNotFoundMiddleware,
+  errorServerMiddleware,
+} from "./middlewares/error.middleware";
 
 const PORT = 3000;
 
@@ -22,8 +22,8 @@ async function init() {
     app.use("/api", routes);
     docs(app);
 
-    // app.use(errorNotFoundMiddleware);
-    // app.use(errorServerMiddleware);
+    app.use(errorNotFoundMiddleware);
+    app.use(errorServerMiddleware);
 
 
     // http://localhost:3000/api
